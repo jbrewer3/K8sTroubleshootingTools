@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: host-logs
+  labels:
+    k8s-app: host-logs
+spec:
+  selector:
+    matchLabels:
+      name: host-logs
+  template:
+    metadata:
+      labels:
+        name: host-logs
+    spec:
+      containers:
+      - name: nginx  
+        image: nginx
+        volumeMounts:
+        - name: varlog
+          mountPath: /host-logs
+          readOnly: true
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
